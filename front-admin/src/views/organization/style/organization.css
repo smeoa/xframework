@@ -1,0 +1,276 @@
+/* ========================================
+   organization 页面样式
+   ======================================== */
+
+/* 容器布局 */
+.organization-container {
+  padding: 0;
+}
+
+.org-main {
+  padding: 0;
+}
+
+.organization-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 左侧面板：内容用卡片承载，与右侧主卡片同构（header 同高） */
+.organization-aside {
+  background-color: #fff;
+  /* 左侧（外沿）圆角：卡片圆角处会露出此白底，若为直角则圆角视觉上被抹平 */
+  border-top-left-radius: var(--radius-card);
+  border-bottom-left-radius: var(--radius-card);
+}
+
+.org-aside-card {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 左右卡片无缝拼接（间距 0）：接缝处取消圆角，只保留最外围的 6px（--radius-card） */
+.el-card.org-aside-card {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.el-card.org-card {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  /* 接缝处只保留左侧卡片的一条描边，避免两卡相邻叠加成 1.6px 粗线（global.css 对 .el-card 的 border 用了 !important） */
+  border-left: 0 !important;
+}
+
+/* 树区域铺满卡片剩余高度，超出时卡片内滚动 */
+.org-aside-card > .el-card__body {
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+/* 分段控件在 header 内居中；高度由卡片 header 统一决定，与右侧一致 */
+.org-tab-header {
+  display: flex;
+  justify-content: center;
+}
+
+/* 分段控件容器去掉左右内边距 */
+.org-tab-header .el-segmented {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* 分段选项左右内边距加大到 16px */
+.org-tab-header .el-segmented .el-segmented__item {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* 左侧选项：按钮左侧圆角 */
+.org-tab-header .el-segmented .el-segmented__item:first-of-type {
+  border-top-left-radius: var(--radius);
+  border-bottom-left-radius: var(--radius);
+}
+
+/* 右侧选项：按钮右侧圆角 */
+.org-tab-header .el-segmented .el-segmented__item:last-of-type {
+  border-top-right-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+}
+
+/* 头部卡片布局 */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* 选中数据时的批量操作栏 */
+.batch-action-bar {
+  display: flex;
+  align-items: center;
+  /* 按钮间距交由 Element Plus 相邻按钮默认外边距（12px）承担，
+     与未选中状态头部按钮间距保持一致；不再额外叠加 flex gap */
+  gap: 0;
+}
+
+.batch-selected-info {
+  font-weight: 500;
+  /* 承接原 gap(8px) + margin(16px) 的间隔，保持「已选 N 项」与首个按钮的 24px 间距不变 */
+  margin-right: 24px;
+}
+
+/* 主内容区域布局 */
+.main-content {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+/* 表格区域 - 100%宽度 */
+.table-area {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 表格样式 - 100%宽度 */
+.organization-table,
+.table-area .el-table,
+.table-area > .el-table {
+  width: 100% !important;
+  min-width: 100%;
+}
+
+/* 确保表格和分页组件占满整个宽度 */
+.table-area > * {
+  width: 100%;
+}
+
+/* 表格分隔条 */
+.table-resizer {
+  position: absolute;
+  top: 0;
+  right: -5px;
+  width: 10px;
+  height: 100%;
+  cursor: col-resize;
+  background-color: transparent;
+  z-index: 10;
+}
+
+/* 搜索框 */
+.search-input {
+  width: 190px;
+  margin-right: 8px;
+}
+
+/* 设置链接 */
+.settings-link {
+  width: 0px;
+}
+
+/* 操作按钮间距 */
+.action-btn {
+  margin-left: 8px;
+}
+
+.action-btn-small {
+  margin-left: 0;
+}
+
+.action-dropdown {
+  cursor: pointer;
+}
+
+/* 筛选 + 已保存条件下拉：并排拼接为一个整体按钮组 */
+.filter-split {
+  display: inline-flex;
+}
+
+/* 拆分按钮：仅箭头按钮紧贴主按钮，覆盖 .action-btn 的 margin-left，
+   主按钮保留 .action-btn 的间距以与左侧「排序」按钮保持距离 */
+.filter-split .filter-split-more {
+  margin-left: 0;
+}
+
+.filter-split-more {
+  padding-left: 6px;
+  padding-right: 6px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.filter-split > .el-button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* 已保存筛选条件下拉项：悬停时右侧显示删除图标 */
+.filter-preset-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 160px;
+  /* 收窄右侧内边距，让删除图标比默认更靠右 */
+  padding-right: 8px;
+}
+
+.filter-preset-item-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 当前生效的方案：整行背景色区分，名称同步高亮 */
+.filter-preset-item.is-active {
+  background-color: var(--el-color-primary-light-9);
+}
+
+.filter-preset-item.is-active .filter-preset-item-name {
+  color: var(--el-color-primary);
+  font-weight: 600;
+}
+
+.filter-preset-item-delete {
+  color: var(--el-color-danger);
+}
+
+/* 悬停才显示的删除图标，避免默认状态下挤压方案名 */
+.filter-preset-item-action {
+  margin-left: 8px;
+  opacity: 0;
+  flex-shrink: 0;
+}
+
+.filter-preset-item:hover .filter-preset-item-action {
+  opacity: 1;
+}
+
+/* 分页组件 */
+.pagination-wrapper {
+  margin-top: 0;
+  justify-content: flex-end;
+  display: flex;
+}
+
+/* 高级搜索侧边栏 */
+.advanced-search-aside {
+  height: calc(100vh - 100px);
+}
+
+.content-wrapper {
+  width: 100%;
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 1200px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .advanced-search-aside {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* 仅作用于本页主卡片，避免全局污染其他页面（如仪表盘卡片的底部内边距） */
+.org-card > .el-card__body {
+  padding-bottom: 0px;
+}

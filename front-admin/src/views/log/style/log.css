@@ -1,0 +1,176 @@
+/* ========================================
+   日志管理页面样式（容器 / 工具栏 / 筛选方案）
+   ======================================== */
+
+/* 容器布局 */
+.admin-user-container {
+  padding: 0;
+}
+
+.admin-user-main {
+  padding: 0;
+  height: calc(100vh - 100px);
+}
+
+/* 头部卡片布局 */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* 选中数据时的批量操作栏 */
+.batch-action-bar {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  /* 按钮间距交由 Element Plus 相邻按钮默认外边距（12px）承担，
+     与未选中状态头部按钮间距保持一致；不再额外叠加 flex gap */
+  gap: 0;
+}
+
+.batch-selected-info {
+  font-weight: 500;
+  /* 承接原 gap(8px) + margin(16px) 的间隔，保持「已选 N 项」与首个按钮的 24px 间距不变 */
+  margin-right: 24px;
+}
+
+/* 主内容区域布局 */
+.main-content {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+/* 表格区域 - 100%宽度 */
+.table-area {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-area .el-table,
+.table-area > .el-table {
+  width: 100% !important;
+  min-width: 100%;
+}
+
+.table-area > * {
+  width: 100%;
+}
+
+/* 搜索框 */
+.search-input {
+  width: 240px;
+  margin-right: 8px;
+}
+
+/* 操作按钮间距 */
+.action-btn {
+  margin-left: 8px;
+}
+
+/* 筛选 + 已保存条件下拉：并排拼接为一个整体按钮组 */
+.filter-split {
+  display: inline-flex;
+}
+
+.filter-split .filter-split-more {
+  margin-left: 0;
+}
+
+.filter-split-more {
+  padding-left: 6px;
+  padding-right: 6px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.filter-split > .el-button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* 已保存筛选条件下拉项：悬停时右侧显示删除图标 */
+.filter-preset-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 160px;
+  padding-right: 8px;
+}
+
+.filter-preset-item-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 当前生效的方案：整行背景色区分，名称同步高亮 */
+.filter-preset-item.is-active {
+  background-color: var(--el-color-primary-light-9);
+}
+
+.filter-preset-item.is-active .filter-preset-item-name {
+  color: var(--el-color-primary);
+  font-weight: 600;
+}
+
+.filter-preset-item-delete {
+  color: var(--el-color-danger);
+}
+
+/* 悬停才显示的删除图标，避免默认状态下挤压方案名 */
+.filter-preset-item-action {
+  margin-left: 8px;
+  opacity: 0;
+  flex-shrink: 0;
+}
+
+.filter-preset-item:hover .filter-preset-item-action {
+  opacity: 1;
+}
+
+/* 高级搜索侧边栏 */
+.advanced-search-aside {
+  width: 320px;
+  height: calc(100vh - 100px);
+}
+
+/* 选择框列 - 表头去除左右内边距 */
+th.selection-header.el-table__cell {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+.selection-header .cell {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+/* 仅作用于本页主卡片，避免全局污染其他页面 */
+.admin-user-card > .el-card__body {
+  padding-bottom: 0px;
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 1200px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .advanced-search-aside {
+    width: 100%;
+    height: auto;
+  }
+}

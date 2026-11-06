@@ -1,0 +1,120 @@
+/* 设计 token：颜色 / 字体 / 间距 / 圆角 / 阴影 / 图标尺寸的唯一来源
+   依据：2.PRD.md §2.4.1（色值基线）、UI规范.md §2–§6（字号、间距、组件尺寸）
+   规则：页面与组件只允许引用 var(--...)，禁止自造色值、字号与间距。 */
+
+:root {
+  /* ---------- 颜色（PRD §2.4.1 基线） ---------- */
+  --color-surface: #ffffff; /* 页面背景、卡片底、页脚底 */
+  --color-surface-warm: rgb(233, 241, 240); /* 页面浅底（冷调浅灰绿） */
+  --color-text: #1a1a1a; /* 正文、标题 */
+  --color-text-muted: #5d6874; /* 辅助灰：次要文字、说明、占位符 */
+  --color-cta: #2b2b2b; /* 主 CTA 实心底与描边 */
+  --color-cta-text: #ffffff; /* 主 CTA 文字 */
+  --color-line: #dce2e8; /* 分隔线、输入框描边 */
+  --color-focus: #1a1a1a; /* 键盘焦点轮廓 */
+  --color-danger: #ff564e; /* 仅用于错误提示与校验态（UI规范 §2.1） */
+  /* 强调暖金：仅用于服务线 / 图标描边。源稿未给出具体色值，[?] BLOCKED，待设计确认后替换；
+     当前回退为 currentColor，不写入自造色值 */
+  --color-accent-gold: currentColor;
+
+  /* ---------- 字体（UI规范 §3.1–§3.3） ---------- */
+  /* Jost 字体文件尚未入库，本地未安装时按系统无衬线回退，不额外发起字体请求 */
+  --font-family-base:
+    'Jost', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', Arial,
+    sans-serif;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* 字号阶梯：基础档为移动端，桌面在文件末尾的媒体查询内扩展 */
+  --font-size-h1: 2.5rem; /* 40px（桌面 50px） */
+  --font-size-h2: 1.75rem; /* 28px（桌面 40px） */
+  --font-size-h3: 1.25rem; /* 20px */
+  --font-size-lg: 1.625rem; /* 26px：博客卡标题 */
+  --font-size-base: 1.125rem; /* 18px：正文基准、卡片标题、按钮文字 */
+  --font-size-label: 1rem; /* 16px：表单输入、页脚链接、顶栏 */
+  --font-size-small: 0.9375rem; /* 15px：导航项、类目、眉标 */
+  --font-size-xs: 0.8125rem; /* 13px：角标 */
+  --font-size-2xs: 0.75rem; /* 12px：数量气泡 */
+
+  --line-height-tight: 1.1; /* 标题 */
+  --line-height-snug: 1.33; /* 卡片标题 */
+  --line-height-body: 1.55; /* 正文 */
+  --line-height-relaxed: 1.6; /* 页脚、列表 */
+
+  /* 正文行长上限：PRD §2.4.1 ≤80 字符 */
+  --measure-text: 80ch;
+
+  /* ---------- 间距（UI规范 §4.3、§12 实测节奏档位） ---------- */
+  --space-2xs: 5px;
+  --space-xs: 10px;
+  --space-sm: 15px;
+  --space-md: 20px;
+  --space-lg: 30px;
+  --space-xl: 45px;
+  --space-2xl: 50px;
+  --space-3xl: 65px;
+  --space-4xl: 70px;
+  --space-5xl: 75px;
+
+  /* 区块纵向节奏（UI规范 §4.3）：手机 45px，平板 65px，桌面 75px，
+     断点覆写在文件末尾的媒体查询内 */
+  --section-space-y: var(--space-xl);
+
+  /* ---------- 圆角（UI规范 §1：主体 0 圆角，圆形元素 100%） ---------- */
+  --radius-none: 0;
+  --radius-xs: 2px;
+  --radius-sm: 6px;
+  --radius-full: 100%;
+
+  /* ---------- 阴影（UI规范 §1：仅浮层使用） ---------- */
+  --shadow-overlay: 0 10px 40px rgb(0 0 0 / 10%);
+  --shadow-popover: 0 0 10px rgb(0 0 0 / 30%);
+
+  /* ---------- 图标尺寸（UI规范 §6.13） ---------- */
+  --icon-size-sm: 16px; /* 导航辅助、社媒 */
+  --icon-size-md: 22px; /* 图标气泡 */
+  --icon-size-lg: 23px; /* 顶栏图标 */
+  --icon-size-xl: 37px; /* 轮播箭头 */
+  --icon-size-2xl: 38px; /* 服务承诺条 */
+
+  /* ---------- 布局容器（UI规范 §4.1；容器实现由 ENG-003 负责） ---------- */
+  --container-sm: 720px;
+  --container-md: 960px;
+  --container-max: 1400px;
+  --container-wide: 1200px;
+  --container-padding: 15px;
+  /* 三档断点（PRD §2.4.1）：≤767 手机 / 768–1023 平板 / ≥1024 桌面。
+     媒体查询只接受字面量，样式内统一写 768px / 1024px；
+     下列变量仅供容器查询与脚本读取，不能用于 @media */
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+
+  /* ---------- 控件尺寸与交互（UI规范 §6.1、§6.2、§7） ---------- */
+  --control-height: 46px;
+  --button-min-height: 47px;
+  --button-padding-y: 11px;
+  --button-padding-x: 18px;
+  --button-border-width: 1.6px;
+  --target-size-min: 44px; /* 最小触控尺寸 */
+  --transition-base: 0.3s ease;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+}
+
+/* 平板档：区块纵向节奏上调（移动优先，向上扩展） */
+@media (min-width: 768px) {
+  :root {
+    --section-space-y: var(--space-3xl); /* 65px */
+  }
+}
+
+/* 桌面档：标题字号与区块节奏上调 */
+@media (min-width: 1024px) {
+  :root {
+    --font-size-h1: 3.125rem; /* 50px */
+    --font-size-h2: 2.5rem; /* 40px */
+    --section-space-y: var(--space-5xl); /* 75px */
+  }
+}

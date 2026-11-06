@@ -1,0 +1,46 @@
+{
+  "name": "front-site",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=22.22.3"
+  },
+  "scripts": {
+    "dev": "nuxt dev --dotenv .env.development",
+    "build": "nuxt build --dotenv .env.production",
+    "generate": "nuxt generate --dotenv .env.production",
+    "preview": "nuxt preview --dotenv .env.production",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "nuxt typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "postinstall": "nuxt prepare && simple-git-hooks"
+  },
+  "dependencies": {
+    "@nuxtjs/seo": "^6.0.1",
+    "nuxt": "^4.6.4"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.17.0",
+    "eslint": "^10.14.0",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10",
+    "simple-git-hooks": "^2.14.0",
+    "typescript": "~5.9.3",
+    "vue-tsc": "^3.3.14"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged && npx nuxt typecheck"
+  },
+  "lint-staged": {
+    "*.{js,mjs,ts,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,yml,yaml,html}": [
+      "prettier --write"
+    ]
+  }
+}

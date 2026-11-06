@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>去中文及联系方式工具 · 单张图片去中文及联系方式</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:         #070b0c;
+    --bg-grid:    rgba(55, 242, 192, 0.045);
+    --panel:      #0d1417;
+    --panel-2:    #111c20;
+    --line:       rgba(120, 168, 160, 0.16);
+    --text:       #dcece8;
+    --muted:      #64807b;
+    --accent:     #37f2c0;
+    --accent-dim: rgba(55, 242, 192, 0.5);
+    --amber:      #ffb35c;
+    --danger:     #ff6b6b;
+    --display:    "Chakra Petch", "Microsoft YaHei", sans-serif;
+    --mono:       "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+
+  body {
+    min-height: 100vh;
+    background:
+      linear-gradient(var(--bg-grid) 1px, transparent 1px) 0 0 / 44px 44px,
+      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px) 0 0 / 44px 44px,
+      radial-gradient(120% 90% at 12% 0%, #10201f 0%, var(--bg) 58%);
+    color: var(--text);
+    font-family: var(--display);
+    padding: 36px clamp(16px, 4vw, 56px) 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  h1 { margin: 0; font-size: clamp(24px, 3.6vw, 40px); font-weight: 700; line-height: 1; }
+  h1 .slash { color: var(--accent); }
+
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--mono); font-size: 11.5px; }
+  .chip {
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.015);
+    padding: 6px 11px;
+    border-radius: 2px;
+    color: var(--muted);
+  }
+  .chip b { color: var(--text); font-weight: 500; }
+
+  /* ---------- toolbar ---------- */
+  .toolbar {
+    margin-top: 26px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    padding: 11px 22px;
+    border: 1px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease, opacity .15s ease;
+  }
+  .btn:hover:not(:disabled) { background: rgba(55, 242, 192, .12); }
+  .btn.primary { background: var(--accent); color: #04110d; }
+  .btn.primary:hover:not(:disabled) { background: #5ff8cd; }
+  .btn:disabled { opacity: .35; cursor: not-allowed; }
+  .btn.ghost { border-color: var(--line); color: var(--muted); }
+  .btn.ghost:hover:not(:disabled) { background: rgba(255,255,255,.03); color: var(--text); }
+
+  .hint { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+  /* ---------- stats ---------- */
+  .stats {
+    margin-top: 18px;
+    display: none;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .stats.show { display: flex; }
+  .stat {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: 8px 13px;
+    color: var(--muted);
+  }
+  .stat b { color: var(--accent); font-weight: 500; }
+
+  /* ---------- stage ---------- */
+  .grid {
+    margin-top: 22px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(16px, 2.5vw, 28px);
+    align-items: start;
+  }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+
+  .panel {
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  }
+  .panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .panel-head .tag { color: var(--accent); }
+  .panel-head .tag.after { color: var(--amber); }
+
+  .viewport {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background:
+      linear-gradient(45deg, #0a1012 25%, transparent 25%) 0 0 / 24px 24px,
+      linear-gradient(-45deg, #0a1012 25%, transparent 25%) 0 12px / 24px 24px,
+      linear-gradient(45deg, transparent 75%, #0a1012 75%) 12px -12px / 24px 24px,
+      linear-gradient(-45deg, transparent 75%, #0a1012 75%) -12px 0 / 24px 24px,
+      #0b1214;
+  }
+  .viewport img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: none;
+  }
+  .viewport img.show { display: block; }
+  .viewport .placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    padding: 20px;
+  }
+  .viewport .placeholder .big { font-family: var(--display); font-size: 16px; color: var(--text); }
+  .viewport.dragover { outline: 2px dashed var(--accent); outline-offset: -8px; }
+
+  /* ---------- removed texts ---------- */
+  .texts {
+    margin-top: 22px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    display: none;
+  }
+  .texts.show { display: block; }
+  .texts .panel-head { border-bottom: 1px solid var(--line); }
+  .texts .list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 14px 16px;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .texts .list::-webkit-scrollbar { width: 8px; }
+  .texts .list::-webkit-scrollbar-thumb { background: rgba(120,168,160,.22); }
+  .tk {
+    font-size: 13px;
+    padding: 4px 9px;
+    border: 1px solid var(--line);
+    background: rgba(255,179,92,.06);
+    color: var(--amber);
+  }
+
+  /* ---------- message ---------- */
+  .msg {
+    margin-top: 18px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    display: none;
+  }
+  .msg.show { display: block; }
+  .msg.error { border-color: rgba(255,107,107,.5); color: var(--danger); }
+  .msg.ok { border-color: rgba(55,242,192,.4); color: var(--accent); }
+
+  .spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 8px;
+    vertical-align: -2px;
+    border: 2px solid rgba(4,17,13,.35);
+    border-top-color: #04110d;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <p class="eyebrow">PaddleOCR + LaMa · 与产品图片处理同一套逻辑</p>
+    <h1>去中文及联系方式工具<span class="slash"> / </span>单张图片</h1>
+  </div>
+  <div class="meta">
+    <span class="chip">擦除口径 <b>含中文 / 电话·邮箱·网址·社交账号</b></span>
+    <span class="chip">单张上限 <b>10MB</b></span>
+    <span class="chip">输出 <b>JPEG</b></span>
+  </div>
+</header>
+
+<div class="toolbar">
+  <button class="btn primary" id="pickBtn">选择图片</button>
+  <button class="btn" id="runBtn" disabled>开始处理</button>
+  <button class="btn ghost" id="dlBtn" disabled>下载结果</button>
+  <button class="btn ghost" id="resetBtn" disabled>重置</button>
+  <input type="file" id="fileInput" accept="image/*" hidden />
+  <span class="hint">支持点击选择、拖拽到左侧区域、或直接 Ctrl / ⌘ + V 粘贴图片</span>
+</div>
+
+<div class="stats" id="stats">
+  <span class="stat">命中区域 <b id="sRemoved">0</b> 处</span>
+  <span class="stat">结果尺寸 <b id="sSize">—</b></span>
+  <span class="stat">耗时 <b id="sCost">—</b></span>
+</div>
+
+<div class="msg" id="msg"></div>
+
+<div class="grid">
+  <div class="panel">
+    <div class="panel-head"><span class="tag">Original</span><span>原图</span></div>
+    <div class="viewport" id="stageOriginal">
+      <div class="placeholder" id="phOriginal">
+        <span class="big">拖入 / 选择一张图片</span>
+        <span>点击左上方「选择图片」开始</span>
+      </div>
+      <img id="imgOriginal" alt="原图" />
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><span class="tag after">Processed</span><span>去中文及联系方式结果</span></div>
+    <div class="viewport" id="stageResult">
+      <div class="placeholder">
+        <span class="big">等待处理</span>
+        <span>处理完成后在此显示结果</span>
+      </div>
+      <img id="imgResult" alt="结果图" />
+    </div>
+  </div>
+</div>
+
+<div class="texts" id="textsBox">
+  <div class="panel-head"><span>已擦除中文 / 联系方式（OCR 命中）</span><span id="textsCount"></span></div>
+  <div class="list" id="textsList"></div>
+</div>
+
+<script type="module">
+  // 统一走项目封装的 request.js：自动注入 Authorization、统一 camelCase↔snake_case
+  import request from "/src/utils/request.js";
+
+  const $ = (id) => document.getElementById(id);
+
+  const fileInput = $("fileInput");
+  const pickBtn = $("pickBtn");
+  const runBtn = $("runBtn");
+  const dlBtn = $("dlBtn");
+  const resetBtn = $("resetBtn");
+  const stageOriginal = $("stageOriginal");
+  const imgOriginal = $("imgOriginal");
+  const phOriginal = $("phOriginal");
+  const imgResult = $("imgResult");
+  const resultPlaceholder = $("stageResult").querySelector(".placeholder");
+  const msg = $("msg");
+  const stats = $("stats");
+  const textsBox = $("textsBox");
+  const textsList = $("textsList");
+
+  let currentFile = null;
+  let resultDataUrl = "";
+  let resultName = "result.jpg";
+
+  function showMsg(text, type) {
+    msg.textContent = text;
+    msg.className = "msg show" + (type ? " " + type : "");
+  }
+  function clearMsg() {
+    msg.className = "msg";
+    msg.textContent = "";
+  }
+
+  function setFile(file) {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      showMsg("请选择图片文件（jpg / png / webp / bmp）", "error");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      showMsg("图片体积超限（最大 10MB）", "error");
+      return;
+    }
+    currentFile = file;
+    resultName = file.name.replace(/\.[^.]+$/, "") + "_nochinese.jpg";
+
+    clearMsg();
+    stats.classList.remove("show");
+    textsBox.classList.remove("show");
+    textsList.innerHTML = "";
+
+    resultDataUrl = "";
+    imgResult.classList.remove("show");
+    imgResult.removeAttribute("src");
+    resultPlaceholder.style.display = "flex";
+    dlBtn.disabled = true;
+
+    imgOriginal.src = URL.createObjectURL(file);
+    imgOriginal.classList.add("show");
+    phOriginal.style.display = "none";
+
+    runBtn.disabled = false;
+    resetBtn.disabled = false;
+  }
+
+  function reset() {
+    currentFile = null;
+    resultDataUrl = "";
+    fileInput.value = "";
+    imgOriginal.classList.remove("show");
+    imgOriginal.removeAttribute("src");
+    phOriginal.style.display = "flex";
+    imgResult.classList.remove("show");
+    imgResult.removeAttribute("src");
+    resultPlaceholder.style.display = "flex";
+    runBtn.disabled = true;
+    dlBtn.disabled = true;
+    resetBtn.disabled = true;
+    stats.classList.remove("show");
+    textsBox.classList.remove("show");
+    clearMsg();
+  }
+
+  async function run() {
+    if (!currentFile) return;
+
+    const form = new FormData();
+    form.append("file", currentFile, currentFile.name);
+
+    runBtn.disabled = true;
+    dlBtn.disabled = true;
+    runBtn.innerHTML = '<span class="spinner"></span>处理中…';
+    showMsg("正在识别并擦除中文及联系方式，首次调用需加载 OCR 与修复模型，请稍候…");
+
+    const start = performance.now();
+    try {
+      // OCR 定位 + LaMa 修复耗时较长（首次还需加载模型），单独放宽本次请求超时，
+      // 避免沿用全局 10s 超时导致请求被中断
+      const res = await request.post("/admin/tool/remove-watermark", form, {
+        timeout: 300000,
+      });
+      const elapsed = ((performance.now() - start) / 1000).toFixed(1);
+
+      if (!res || res.code !== 200 || !res.data || !res.data.image) {
+        showMsg((res && (res.message || res.detail)) || "处理失败，请稍后重试", "error");
+        return;
+      }
+
+      const data = res.data;
+      resultDataUrl = data.image;
+      imgResult.src = resultDataUrl;
+      imgResult.classList.add("show");
+      resultPlaceholder.style.display = "none";
+      dlBtn.disabled = false;
+
+      $("sRemoved").textContent = data.removed ?? 0;
+      $("sCost").textContent = elapsed + "s";
+      stats.classList.add("show");
+      imgResult.onload = () => {
+        $("sSize").textContent = imgResult.naturalWidth + " × " + imgResult.naturalHeight;
+      };
+
+      const texts = data.texts || [];
+      textsList.innerHTML = "";
+      if (texts.length) {
+        texts.forEach((t) => {
+          const span = document.createElement("span");
+          span.className = "tk";
+          span.textContent = t;
+          textsList.appendChild(span);
+        });
+        textsBox.classList.add("show");
+        $("textsCount").textContent = texts.length + " 条";
+      } else {
+        textsBox.classList.remove("show");
+      }
+
+      showMsg(
+        data.removed > 0
+          ? `处理完成：共擦除 ${data.removed} 处中文及联系方式，耗时 ${elapsed}s`
+          : `处理完成：未识别到需要擦除的中文及联系方式（图片已原样重编码），耗时 ${elapsed}s`,
+        "ok"
+      );
+    } catch (e) {
+      showMsg("处理失败：" + (e && e.message ? e.message : e), "error");
+    } finally {
+      runBtn.innerHTML = "开始处理";
+      runBtn.disabled = false;
+    }
+  }
+
+  function download() {
+    if (!resultDataUrl) return;
+    const a = document.createElement("a");
+    a.href = resultDataUrl;
+    a.download = resultName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  pickBtn.addEventListener("click", () => fileInput.click());
+  fileInput.addEventListener("change", (e) => setFile(e.target.files[0]));
+  runBtn.addEventListener("click", run);
+  dlBtn.addEventListener("click", download);
+  resetBtn.addEventListener("click", reset);
+
+  // 拖拽上传
+  stageOriginal.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    stageOriginal.classList.add("dragover");
+  });
+  stageOriginal.addEventListener("dragleave", () => stageOriginal.classList.remove("dragover"));
+  stageOriginal.addEventListener("drop", (e) => {
+    e.preventDefault();
+    stageOriginal.classList.remove("dragover");
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    setFile(file);
+  });
+
+  // 粘贴上传
+  document.addEventListener("paste", (e) => {
+    const items = (e.clipboardData && e.clipboardData.items) || [];
+    for (const item of items) {
+      if (item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        if (file) setFile(file);
+        break;
+      }
+    }
+  });
+</script>
+</body>
+</html>

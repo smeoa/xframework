@@ -1,0 +1,107 @@
+/* 权限组管理模块样式 */
+
+.permission-group-card {
+  margin: 0;
+}
+
+.permission-group-card .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.permission-group-card .header-actions,
+.permission-group-card .header-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.permission-group-card .search-input {
+  width: 220px;
+}
+
+.permission-group-card .filter-select {
+  width: 160px;
+}
+
+.permission-group-card .menu-code-tag {
+  margin-left: 6px;
+}
+
+.permission-group-card .pagination-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0;
+}
+
+/* 权限组配置对话框 */
+.permission-group-dialog .dialog-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.permission-group-dialog .dialog-tip {
+  color: var(--el-text-color-secondary);
+  font-size: 12px;
+}
+
+.permission-group-dialog .tree-wrap,
+.permission-group-dialog .table-wrap {
+  border: 1px solid var(--el-border-color-lighter);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.permission-group-dialog .tree-wrap {
+  max-height: 420px;
+  overflow: auto;
+}
+
+.permission-group-dialog .subject-tabs {
+  min-height: 300px;
+}
+
+/* 权限组配置抽屉：统计摘要 + Tab 明细 */
+/* 内边距与抽屉 header 左侧对齐（20px），避免内容贴边 */
+.permission-group-drawer .el-drawer__body {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow: auto;
+}
+
+/* Tab 区域撑满抽屉剩余高度，表格内部滚动而非留白 */
+.permission-group-drawer .el-tabs {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.permission-group-drawer .el-tabs__content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.permission-group-drawer .el-tab-pane {
+  flex: 1;
+  min-height: 0;
+}
+
+.permission-group-dialog .code-tag {
+  margin: 2px 4px 2px 0;
+}
+
+.permission-group-dialog .placeholder {
+  color: var(--el-text-color-secondary);
+  font-size: 13px;
+  line-height: 1.9;
+}

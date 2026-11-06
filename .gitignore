@@ -1,0 +1,36 @@
+# ============================================
+# xf - Git 忽略规则（仅保留项目内实际存在的项）
+# ============================================
+
+# --- Python 字节码 ---
+__pycache__/
+*.py[cod]
+
+# --- 测试缓存 ---
+.pytest_cache/
+
+# --- 环境变量与密钥（严禁提交）---
+.env
+.env.*
+!.env.example
+
+# --- 日志 ---
+*.log
+
+# --- Node / 前端依赖与构建产物 ---
+node_modules/
+dist/
+.nuxt/
+.output/
+
+# --- 前端测试产物 ---
+test-results/
+playwright-report/
+
+# --- 本地上传/媒体数据 ---
+data/media/
+site/storage/
+
+# --- ffmpeg 二进制依赖（部署时自行下载，代码会回退到系统 PATH 中的 ffmpeg）---
+framework/service/converter/ffmpeg/bin/
+framework/service/converter/ffmpeg/*.zip
